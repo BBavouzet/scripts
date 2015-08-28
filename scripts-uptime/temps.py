@@ -6,8 +6,6 @@ import sys
 
 def temps():
     cpu = open("/proc/uptime", 'r')
-    # debug :
-    # cpu = open("uptime.txt", "r")
     val = cpu.readline()
     cpu.close()
     rslt = re.compile("^\d+.\d{2}")
