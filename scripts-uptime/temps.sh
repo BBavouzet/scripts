@@ -1,4 +1,2 @@
 #!/bin/bash
-t=$(python3 temps.py)
-
-zenity --info --text="$t" --title="uptime"
+zenity --info --text="$(python3 temps.py)" --title="uptime"
