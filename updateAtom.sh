@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#A éditer selon les versions installées : cf github pour les différents noms et extensions existants
+# A éditer selon les versions installées : cf github pour les différents noms et extensions existants
 atom='atom-amd64.deb'
 dl=$(echo ~/Téléchargements)
 
@@ -9,6 +9,16 @@ vert="\e[1;92m"
 rouge="\e[1;91m"
 bleu="\e[1;96m"
 fin="\e[0m"
+
+# vérifie s'il existe déjà une version d'un package Deb dans le répertoire
+# si oui, on le détruit.
+check() {
+  if [ -e $dl$atom ]
+    then
+    rm $atom
+  fi
+
+}
 
 #récupération du package 64bits avec wget en mode non-silencieux
 recup() {
@@ -26,7 +36,7 @@ updt() {
     then
         sudo dpkg -i $atom
         echo -e $vert"Suppression$fin du package sur le disque."
-        rm $atom
+        check
         cd ~
         #vérification de la version du package
         echo -e $vert"Vérification$fin : Atom version : $(atom -v)"
@@ -37,10 +47,11 @@ updt() {
 
 # fonction principale du programme
 main() {
+  check
   rls=$(curl -s https://github.com/atom/atom/releases/latest)
   #debug :
   #rls="<html><body>You are being <a href=https://github.com/atom/atom/releases/tag/v1.0.7>redirected</a>.</body></html>"
-  online=$(echo $rls | sed "s/^.*\(....[0-9]\).*$/\1/")
+  online=$(echo $rls | egrep -o "[0-9]+.[0-9]+.[0-9]+")
   toinstall="https://github.com/atom/atom/releases/download/v$online/atom-amd64.deb"
   install=$(atom -v)
 
@@ -62,9 +73,9 @@ main() {
 }
 
 # Point d'entrée du script
-# Attention à bien vérifier les variables de débuts de script
+# Attention à bien vérifier les variables de début de script
 checkCurl=$(apt list --installed "curl")
-# 8 est la longueur du mot retournées par apt (nouvelle version)
+# 8 est la longueur du mot retournée par apt (nouvelle version) : Listing...
 # si la longueur est supérieure à 8 alors curl est bien installé
 if [[ $(echo ${#checkCurl}) -gt 8 ]]
   then
