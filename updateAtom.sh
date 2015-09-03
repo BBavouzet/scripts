@@ -50,7 +50,7 @@ main() {
   check
   rls=$(curl -s https://github.com/atom/atom/releases/latest)
   #debug :
-  #rls="<html><body>You are being <a href=https://github.com/atom/atom/releases/tag/v1.0.7>redirected</a>.</body></html>"
+  #rls='<html><body>You are being <a href="https://github.com/atom/atom/releases/tag/v1.0.7">redirected</a>.</body></html>'
   online=$(echo $rls | egrep -o "[0-9]+.[0-9]+.[0-9]+")
   toinstall="https://github.com/atom/atom/releases/download/v$online/atom-amd64.deb"
   install=$(atom -v)
